@@ -34,5 +34,40 @@ class UserAccount:
         
         for follower in self.followers:
             follower.receive_tweet(tweet1)
-            
+
+
+class Tweet:
+
+    max_characters = 140
+    def __init__(self, message, sender):
+        #en caso de que el tweet contenga mas de 140 caracteres saltara una excepcion
+        if len(message) > self.max_characters:
+            raise ValueError("El mensaje excede el límite de caracteres permitidos.")
+        self.message = message
+        self.sender = sender
+        self.time = datetime.now()
+
+    def __str__(self):
+        return f"El Tweet lo manda:{self.sender} \nFecha del Tweet: {self.time} \nEl tweet es: {self.message}"
+
+
+class Retweet(Tweet):
+
+    def __init__(self, message, sender, original_tweet):
+        super().__init__(message, sender)
+        self.original_tweet = original_tweet
+
+    def __str__(self):
+        return f"El Tweet lo manda:{self.sender} \nFecha del Tweet: {self.time} \nEl tweet es: {self.message} \n El tweet original: {self.original_tweet}"
+
+
+class DirectMessage(Tweet):
+
+    def __init__(self, message, sender, receiver):
+        super().__init__(message, sender)
+        self.receiver = receiver
+
+    def __str__(self):
+        return f"El Tweet lo manda:{self.sender} \nEl receptor es: {self.receiver}\nFecha del Tweet: {self.time} \nEl tweet es: {self.message}"
+
 
