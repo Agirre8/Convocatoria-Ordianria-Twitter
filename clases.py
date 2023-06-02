@@ -10,6 +10,7 @@ class UserAccount:
         #creo 3 listas para almacenar los objetos
         self.tweets = []
         self.followers = []
+        #lista que almacena los tweets de las cuentas que sigue el usuario
         self.timeline = []
     
     #metodo para añadir follower a la lista followers
@@ -29,9 +30,11 @@ class UserAccount:
 
     #metodo para publicar un tweet, ademas implementando que en caso de que el user que ha publicado el tweet tenga seguidores, ellos tambien agregen el tweet a su lista de tweets
     def tweet(self, tweet1):
- 
-        self.tweets.append(tweet1)
+        if isinstance(tweet1, Retweet):
+            #convertir el retweet en un tweet antes de agregarlo a la lista de tweets
+            tweet1 = tweet1.to_tweet()
         
+        self.tweets.append(tweet1)
         for follower in self.followers:
             follower.receive_tweet(tweet1)
 
@@ -57,6 +60,10 @@ class Retweet(Tweet):
         super().__init__(message, sender)
         self.original_tweet = original_tweet
 
+    
+    def to_tweet(self):
+        return Tweet(self.message, self.sender)
+
     def __str__(self):
         return f"El Tweet lo manda:{self.sender} \nFecha del Tweet: {self.time} \nEl tweet es: {self.message} \n El tweet original: {self.original_tweet}"
 
@@ -71,3 +78,15 @@ class DirectMessage(Tweet):
         return f"El Tweet lo manda:{self.sender} \nEl receptor es: {self.receiver}\nFecha del Tweet: {self.time} \nEl tweet es: {self.message}"
 
 
+
+"""¿Deberá modificar los atributos timeline y tweets de la clase UserAccount
+(definida en el ejercicio 1) para que contenga elementos de la clase hija
+Retweet? Justifique su razonamiento y, si cree que hay que modificarlos, explique
+también cómo lo haría.
+
+RESPUESTA:
+Como listas listas timeline y tweets son distintas separado, para permitir que contengan tanto 
+objetos de la clase Tweet como objetos de la clase Retweet. Por lo que al recivir un Retweet
+ tengo que  convertirlo en un objeto de la clase Tweet antes de agregarlo a las listas. Para eso creo un metodo 
+ to_tweet en la clase Retweet para llamarlo despues en la clase UserAccount
+        """
