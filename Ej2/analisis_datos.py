@@ -90,3 +90,30 @@ plt.xlabel("Similitud de Jaccard")
 plt.ylabel("Frecuencia")
 plt.savefig('Ej2/Graficas/similitud_jaccard.png')
 plt.close()
+
+
+#APARTADO 3.C
+
+# Calcular la curtosis de cada sentimiento
+kurtosis = train.groupby('sentiment')['difference_in_words'].apply(lambda x: x.kurtosis())
+
+# Visualizar la curtosis
+plt.figure(figsize=(10, 6))
+sns.barplot(x=kurtosis.index, y=kurtosis.values)
+plt.title("Curtosis de la diferencia en el número de palabras por sentimiento")
+plt.xlabel("Sentimiento")
+plt.ylabel("Curtosis")
+plt.savefig('Ej2/Graficas/curtosis.png')
+plt.close()
+
+# Calcular la asimetría de cada sentimiento
+skewness = train.groupby('sentiment')['difference_in_words'].apply(lambda x: x.skew())
+
+# Visualizar la asimetría
+plt.figure(figsize=(10, 6))
+sns.barplot(x=skewness.index, y=skewness.values)
+plt.title("Asimetría de la diferencia en el número de palabras por sentimiento")
+plt.xlabel("Sentimiento")
+plt.ylabel("Asimetría")
+plt.savefig('Ej2/Graficas/asimetria.png')
+plt.close()
